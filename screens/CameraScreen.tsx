@@ -5,6 +5,7 @@ import * as MediaLibrary from "expo-media-library";
 import { SafeAreaView } from "react-native-safe-area-context";
 import * as tf from "@tensorflow/tfjs";
 import * as FileSystem from "expo-file-system";
+import { useIsFocused } from '@react-navigation/native';
 
 import {
   fetch,
@@ -24,6 +25,7 @@ export default function App(props) {
   const [image, setImage] = useState(null);
   const [state, setState] = useState(null);
   const [disease, setDisease] = useState(null);
+  const isFocused = useIsFocused();
   const makePrediction = async () => {
     {
       try {
@@ -40,10 +42,6 @@ export default function App(props) {
         const imgB64 = await FileSystem.readAsStringAsync(fileUri.uri, {
           encoding: FileSystem.EncodingType.Base64,
         });
-        //  const imageAssetPath = Image.resolveAssetSource(image);
-        //  console.log(imageAssetPath.uri);
-        //  const response1 = await fetch(imageAssetPath.uri, {}, { isBinary: true });
-        // const imageDataArrayBuffer1 = await response1.arrayBuffer();
         const imgBuffer = tf.util.encodeString(imgB64, "base64").buffer;
 
         const imageData1 = new Uint8Array(imgBuffer);
@@ -134,13 +132,16 @@ export default function App(props) {
             <Text style={styles.text2}>Retake</Text>
           </TouchableOpacity>
         </View>
-        {disease && <Text>Your Plant is {disease}</Text>}
+        {disease == "invalid input"&& <Text>Invalid input! Try Again</Text>}
+        {disease && disease!="invalid input"  && <Text>The disease found in given plant is - {disease}</Text>}
       </SafeAreaView>
     );
   }
 
   return (
+    isFocused && (
     <View style={styles.container}>
+      
       <Camera
         style={styles.camera}
         type={type}
@@ -152,7 +153,9 @@ export default function App(props) {
           </TouchableOpacity>
         </View>
       </Camera>
+      
     </View>
+    )
   );
 }
 

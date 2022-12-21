@@ -95,11 +95,11 @@ export default function PickImageFromGallery() {
 
   return (
     <View style={styles.container}>
-      <Button title="Select Image" onPress={pickImage} />
+      {!image && <Button title="Select Image" onPress={pickImage} />}
       {image && (
-        <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
+        <Image source={{ uri: image }} style={{ width: 200, height: 200, borderRadius:10 }} />
       )}
-      {image && <Button title="Predict" onPress={fn}></Button>}
+      {image && <Button title="Predict"  onPress={fn}>  </Button>}
       {image && (
         <Button
           title="Retry"
@@ -108,7 +108,8 @@ export default function PickImageFromGallery() {
           }}
         ></Button>
       )}
-      {disease && <Text>Your plant is {disease}</Text>}
+      {disease=="invalid input" && <Text>Invalid input! Try Again</Text>}
+      {disease && disease!="invalid input" && <Text>The disease found in given plant is - {disease}</Text>}
       <StatusBar style="auto" />
     </View>
   );
