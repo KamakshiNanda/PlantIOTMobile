@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View,Components ,Image} from 'react-native'
 import React from 'react'
-
+/*nvnm*/
 const PredictionScreen = ({Components}) => {
   return (
     <View style={styles.container}>
